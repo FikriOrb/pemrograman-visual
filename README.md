@@ -36,6 +36,12 @@ Selamat datang di repositori catatan dan dokumentasi praktikum **Pemrograman Vis
   - [Implementasi Kode Program (`Form1.vb`)](#-implementasi-kode-program-form1vb)
   - [Penjelasan Logika & Sintaksis](#-penjelasan-logika--sintaksis)
   - [Alur Pengujian Aplikasi](#-alur-pengujian-aplikasi)
+- [📕 Pertemuan 3 - Operator dan Percabangan](#-pertemuan-3---operator-dan-percabangan)
+  - [Konsep Operator & Struktur Percabangan](#-konsep-operator--struktur-percabangan)
+  - [Validasi Input & KeyPress Event](#-validasi-input--keypress-event)
+  - [Implementasi Kode Program (`Form1.vb`)](#-implementasi-kode-program-pertemuan-3-form1vb)
+  - [Penjelasan Logika Percabangan](#-penjelasan-logika-percabangan)
+  - [Alur Pengujian Aplikasi Pertemuan 3](#-alur-pengujian-aplikasi-pertemuan-3)
 
 ---
 
@@ -240,6 +246,93 @@ Me.Close()
 
 ---
 
+# 📕 Pertemuan 3 - Operator dan Percabangan
+
+## 💡 Konsep Operator & Struktur Percabangan
+
+Pada pertemuan ini, dipelajari mengenai penggunaan **operator** (aritmatika, perbandingan, logika) dan **struktur kendali percabangan** (*Conditional Statements*) menggunakan `If...Then...ElseIf...Else...End If` dalam Visual Basic .NET.
+
+Percabangan memungkinkan program mengambil keputusan dan mengeksekusi blok instruksi yang berbeda sesuai dengan kondisi atau kriteria nilai yang terpenuhi.
+
+---
+
+## 🛡️ Validasi Input & KeyPress Event
+
+Untuk menjaga integritas data input:
+- Event `txtNilai_KeyPress` digunakan agar pengguna hanya dapat memasukkan karakter angka (*digits*) dan tombol kontrol (seperti Backspace).
+- `Integer.TryParse` digunakan untuk memvalidasi apakah teks input benar-benar numerik.
+- Pengecekan rentang nilai (*range validation*) memastikan nilai yang dimasukkan berada pada batas **0 - 100**.
+
+---
+
+## 💻 Implementasi Kode Program Pertemuan 3 (`Form1.vb`)
+
+```vb
+Imports System.Net.Mime.MediaTypeNames
+Imports System.Drawing
+
+Public Class Form1
+    Private Sub btnInput_Click(sender As Object, e As EventArgs) Handles btnInput.Click
+        Dim nilai As Integer
+
+        If Not Integer.TryParse(txtNilai.Text, nilai) Then
+            MessageBox.Show("Masukan dalam bentuk angka")
+            txtNilai.Focus()
+            Return
+        End If
+
+        If nilai < 0 OrElse nilai > 100 Then
+            MessageBox.Show("Masukan Nilai 0 sampai 100")
+            txtNilai.Focus()
+            Return
+        End If
+
+        If nilai <= 50 Then
+            picImage.Image = System.Drawing.Image.FromFile("Assets\tsukasa-dance.gif")
+        ElseIf nilai <= 70 Then
+            picImage.Image = System.Drawing.Image.FromFile("Assets\img1.png")
+        Else
+            picImage.Image = System.Drawing.Image.FromFile("Assets\img2.png")
+        End If
+    End Sub
+
+    Private Sub txtNilai_KeyPress(sender As Object, e As KeyPressEventArgs) Handles txtNilai.KeyPress
+        If Not Char.IsControl(e.KeyChar) AndAlso Not Char.IsDigit(e.KeyChar) Then
+            e.Handled = True
+        End If
+    End Sub
+
+    Private Sub picImage_Click(sender As Object, e As EventArgs) Handles picImage.Click
+
+    End Sub
+End Class
+```
+
+---
+
+## 🔍 Penjelasan Logika Percabangan
+
+| Rentang Nilai | Kondisi Percabangan | Output Gambar / Aksi |
+| :--- | :--- | :--- |
+| `Nilai < 0` atau `Nilai > 100` | `nilai < 0 OrElse nilai > 100` | Menampilkan MessageBox peringatan `Masukan Nilai 0 sampai 100` |
+| `0 <= Nilai <= 50` | `nilai <= 50` | Menampilkan animasi `Assets\tsukasa-dance.gif` pada `PictureBox` |
+| `51 <= Nilai <= 70` | `ElseIf nilai <= 70` | Menampilkan gambar `Assets\img1.png` pada `PictureBox` |
+| `71 <= Nilai <= 100` | `Else` | Menampilkan gambar `Assets\img2.png` pada `PictureBox` |
+
+---
+
+## 🚀 Alur Pengujian Aplikasi Pertemuan 3
+
+1. **Jalankan Aplikasi**: Tekan `F5` pada Visual Studio.
+2. **Uji Validasi Karakter**: Coba ketik huruf atau simbol pada kolom input nilai; input selain angka akan dicegah secara otomatis.
+3. **Uji Validasi Rentang**: Masukkan angka di luar rentang (misal `150`), klik tombol **Input**, sistem akan memunculkan dialog peringatan.
+4. **Uji Rentang 0 - 50**: Masukkan angka `45`, gambar animasi Tsukasa dance akan ditampilkan pada `PictureBox`.
+5. **Uji Rentang 51 - 70**: Masukkan angka `65`, gambar `img1.png` akan ditampilkan.
+6. **Uji Rentang 71 - 100**: Masukkan angka `90`, gambar `img2.png` akan ditampilkan.
+
+---
+
 <div align="center">
   <p>📚 <i>Repositori ini akan terus diperbarui secara berkala sesuai dengan perkembangan materi perkuliahan Pemrograman Visual — D3 Teknik Informatika USU.</i></p>
 </div>
+
